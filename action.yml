@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: Andrei Gherzan <andrei@gherzan.com>
+#
+# SPDX-License-Identifier: MIT
+
+name: 'Mirror a git repository over SSH'
+description: >
+  This GitHub action provides the ability to mirror a repository to any other git
+  repository over SSH.
+branding:
+  icon: 'refresh-cw'
+  color: 'green'
+inputs:
+  source-repository:
+    description: 'SSH URL of the destination repository.'
+    required: false
+    default: "auto"
+  destination-repository:
+    description: 'SSH URL of the destination repository.'
+    required: true
+    default: ''
+  dry-run:
+    description: 'Set to "true" to execute a dry run git push.'
+    required: false
+    default: 'false'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - --source-repository
+    - ${{ inputs.source-repository }}
+    - --destination-repository
+    - ${{ inputs.destination-repository }}
+    - --dry-run
+    - ${{ inputs.dry-run }}
