@@ -44,10 +44,12 @@ done
 
 gmm_cmd="git-mirror-me"
 
-if [ -n "$SRC_REPO" ]; then
+if [ -n "$SRC_REPO" ] && [ "$SRC_REPO" != "me" ]; then
 	gmm_cmd="$gmm_cmd --source-repository $SRC_REPO"
 fi
-gmm_cmd="$gmm_cmd --destination-repository $DST_REPO"
+if [ -n "$DST_REPO" ]; then
+    gmm_cmd="$gmm_cmd --destination-repository $DST_REPO"
+fi
 if [ "$DEBUG" = "true" ]; then
 	gmm_cmd="$gmm_cmd --debug"
 fi
