@@ -4,7 +4,7 @@
 
 FROM golang:1.18-alpine
 
-RUN go install github.com/agherzan/git-mirror-me/cmd/git-mirror-me@v1.0.1
+RUN go install github.com/agherzan/git-mirror-me/cmd/git-mirror-me@v1.0.2
 
 ADD entrypoint.sh /entrypoint.sh
 
