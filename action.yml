@@ -10,11 +10,11 @@ branding:
   icon: 'refresh-cw'
   color: 'green'
 inputs:
-  source-repository:
+  source:
     description: 'Sets the source repository for the mirror operation.'
     required: false
     default: "me"
-  destination-repository:
+  destination:
     description: 'Sets the destination repository for the mirror operation.'
     required: true
   debug:
@@ -25,8 +25,8 @@ runs:
   image: 'Dockerfile'
   args:
     - -source-repository
-    - ${{ inputs.source-repository }}
+    - ${{ inputs.source }}
     - -destination-repository
-    - ${{ inputs.destination-repository }}
+    - ${{ inputs.destination }}
     - -debug
     - ${{ inputs.debug }}
