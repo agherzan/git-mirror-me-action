@@ -13,6 +13,7 @@ inputs:
   source-repository:
     description: 'Sets the source repository for the mirror operation.'
     required: false
+    default: "me"
   destination-repository:
     description: 'Sets the destination repository for the mirror operation.'
     required: true
