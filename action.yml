@@ -5,8 +5,7 @@
 name: 'Git Mirror-Me (GMm) GitHub Action'
 description: >
   This GitHub action provides the ability to mirror a repository to any other
-  git repository. It wraps/uses the
-  [git-mirror-me](https://github.com/agherzan/git-mirror-me) tool.
+  git repository.
 branding:
   icon: 'refresh-cw'
   color: 'green'
