@@ -4,72 +4,56 @@ SPDX-FileCopyrightText: Andrei Gherzan <andrei@gherzan.com>
 SPDX-License-Identifier: MIT
 -->
 
-# Git Mirror-Me Action
+# Git Mirror-Me (GMm) GitHub Action
+
+[![License](https://img.shields.io/github/license/agherzan/git-mirror-me-action?label=License)](/COPYING.MIT)
+[![REUSE status](https://api.reuse.software/badge/github.com/agherzan/git-mirror-me-action)](https://api.reuse.software/info/github.com/agherzan/git-mirror-me-action)
 
 This GitHub action provides the ability to mirror a repository to any other git
-repository over SSH. It can be used with repositories on GitHub, GitLab,
-Bitbucket, etc.
-
-Why "Me"? The name derives from the action's ability to default the source
-repository to the one in which the action is triggered.
+repository. It wraps/uses the
+[git-mirror-me](https://github.com/agherzan/git-mirror-me) tool.
 
 ## Inputs
 
 ### `source-repository`
 
-* Sets the URL of the source repository for the mirror (git push) operation.
+* Sets the source repository for the mirror operation.
+* Passes the argument as `-source-repository` to
+  [git-mirror-me](https://github.com/agherzan/git-mirror-me).
 * Required: no.
 * Defaults: value based on the GitHub environment - `GITHUB_SERVER_URL/GITHUB_REPOSITORY`.
 
 ### `destination-repository`
 
-* Sets the URL of the destination repository for the mirror (git push) operation.
+* Sets the destination repository for the mirror operation.
+* Passes the argument as `-destination-repository` to
+  [git-mirror-me](https://github.com/agherzan/git-mirror-me).
 * Required: yes.
 
-### `dry-run`
+### `debug`
 
-* Run the git push operation as a dry run (not affecting the destination). It
-  is useful for testing purposes.
+* When set to _true_, runs
+  [git-mirror-me](https://github.com/agherzan/git-mirror-me) in debug mode.
+  Ignored otherwise.
 * Required: no.
-* Default: `false`.
-* Valid values: `true`, `false`.
 
 ## Environment variables
 
-### `SRC_REPO`
-
-* Same as `source-repository` input.
-* Overridden by the input value.
-
-### `DEST_REPO`
-
-* Same as `destination-repository` input.
-* Overridden by the input value.
-
-### `DRY_RUN`
-
-* Same as `dry-run` input.
-* Overridden by the input value.
-
-### `SSH_PRIVATE_KEY`
+### `GMM_SSH_PRIVATE_KEY`
 
 * The SSH private key used for SSH authentication during git push operation.
-  Make sure it is not protected by a password. Store the key as
-  [an encrypted secret](https://docs.github.com/en/actions/reference/encrypted-secrets)
-  and reference it as part of the workflow configuration file.
-* Required: no.
+* Password protected SSH keys are not supported.
+* When not defined, `git` operations will be executed without authentication.
+* When defined, a host public key configuration is required.
 
-### `SSH_KNOWN_HOSTS`
+### `GMM_SSH_KNOWN_HOSTS`
 
-* Sets the SSH `known_hosts` file. When defined, `StrictHostKeyChecking` is
-  enabled. Otherwise, `StrictHostKeyChecking` is disabled. Store this as
-  [an encrypted secret](https://docs.github.com/en/actions/reference/encrypted-secrets)
-  and reference it as part of the workflow configuration file.
-* Required: no.
+* The hosts public keys used for host validation.
+* The format needs to be based on the`known_hosts` file.
 
 ## Sample configurations
 
-### Workflow for mirroring this repository on push/delete/create
+### Workflow for mirroring _this_ repository on push/delete/create
 
 ```
 Name: Mirror Repository
@@ -86,8 +70,8 @@ jobs:
     steps:
       - uses: agherzan/git-mirror-me-action@v1
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          GMM_SSH_PRIVATE_KEY: ${{ secrets.GMM_SSH_PRIVATE_KEY }}
+          GMM_SSH_KNOWN_HOSTS: ${{ secrets.GMM_SSH_KNOWN_HOSTS }}
         with:
           destination-repository: "git@destination.example:foo/bar.git"
 ```
@@ -109,29 +93,61 @@ jobs:
     steps:
       - uses: agherzan/git-mirror-me-action@v1
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          GMM_SSH_PRIVATE_KEY: ${{ secrets.GMM_SSH_PRIVATE_KEY }}
+          GMM_SSH_KNOWN_HOSTS: ${{ secrets.GMM_SSH_KNOWN_HOSTS }}
         with:
           source-repository: "git@source.example:foo/bar.git"
           destination-repository: "git@destination.example:foo/bar.git"
 ```
 
-## Tests
-
-The implementation is augmented with tests written using the
-[bats](https://github.com/bats-core/bats-core) testing framework. To run the
-tests, build a local docker image from the included [Dockerfile](Dockerfile)
-and run the tests in a container:
-
-```
-docker build .. -t git-mirror-me-action
-docker run --rm -ti --entrypoint bats git-mirror-me-action --verbose-run /tests/entrypoint.bats
-```
-
 ## Contributing
 
-You can send patches using
-[GitHub pull requests](https://github.com/agherzan/git-mirror-me-action/pulls).
+Contributions are more than welcome. You can send patches using [GitHub pull
+requests](https://github.com/agherzan/git-mirror-me-action/pulls).
+
+### Developer Certificate of Origin
+
+The Developer Certificate of Origin (DCO) is a lightweight way for contributors
+to certify that they wrote or otherwise have the right to submit the code they
+are contributing to the project. Here is the full [text of the
+DCO](https://developercertificate.org/), reformatted for readability:
+
+> By making a contribution to this project, I certify that:
+>
+> a. The contribution was created in whole or in part by me and I have the
+> right to submit it under the open source license indicated in the file; or
+>
+> b. The contribution is based upon previous work that, to the best of my
+> knowledge, is covered under an appropriate open source license and I have the
+> right under that license to submit that work with modifications, whether
+> created in whole or in part by me, under the same open source license (unless
+> I am permitted to submit under a different license), as indicated in the
+> file; or
+>
+> c. The contribution was provided directly to me by some other person who
+> certified (a), (b) or (c) and I have not modified it.
+>
+> d. I understand and agree that this project and the contribution are public
+> and that a record of the contribution (including all personal information I
+> submit with it, including my sign-off) is maintained indefinitely and may be
+> redistributed consistent with this project or the open source license(s)
+> involved.
+
+Contributors _sign-off_ that they adhere to these requirements by adding a
+`Signed-off-by` line to commit messages.
+
+```
+This is my commit message
+
+Signed-off-by: Random J Developer <random@developer.example.org>
+```
+
+Git has a `-s` command line option to append this automatically to your
+commit message based on your git configuration (name and email):
+
+```
+$ git commit -s -m 'This is my commit message'
+```
 
 ## Maintainers
 
@@ -139,5 +155,5 @@ You can send patches using
 
 ## LICENSE
 
-The repository is [reuse](https://reuse.software/) compliant. This project is
+This repository is [reuse](https://reuse.software/) compliant and it is
 released under the [MIT](COPYING.MIT) license.

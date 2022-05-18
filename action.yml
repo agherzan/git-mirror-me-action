@@ -2,33 +2,31 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: 'Mirror a git repository over SSH'
+name: 'Git Mirror-Me (GMm) GitHub Action'
 description: >
-  This GitHub action provides the ability to mirror a repository to any other git
-  repository over SSH.
+  This GitHub action provides the ability to mirror a repository to any other
+  git repository. It wraps/uses the
+  [git-mirror-me](https://github.com/agherzan/git-mirror-me) tool.
 branding:
   icon: 'refresh-cw'
   color: 'green'
 inputs:
   source-repository:
-    description: 'SSH URL of the destination repository.'
+    description: 'Sets the source repository for the mirror operation.'
     required: false
-    default: "auto"
   destination-repository:
-    description: 'SSH URL of the destination repository.'
+    description: 'Sets the destination repository for the mirror operation.'
     required: true
-    default: ''
-  dry-run:
-    description: 'Set to "true" to execute a dry run git push.'
+  debug:
+    description: 'Runs the git-mirror-me tool in debug mode.'
     required: false
-    default: 'false'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - --source-repository
+    - -source-repository
     - ${{ inputs.source-repository }}
-    - --destination-repository
+    - -destination-repository
     - ${{ inputs.destination-repository }}
-    - --dry-run
-    - ${{ inputs.dry-run }}
+    - -debug
+    - ${{ inputs.debug }}
