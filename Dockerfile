@@ -6,7 +6,7 @@ FROM golang:1.18-alpine
 
 RUN apk add --no-cache git
 
-RUN go install github.com/agherzan/git-mirror-me/cmd/git-mirror-me@v1.0.2
+RUN go install github.com/agherzan/git-mirror-me/cmd/git-mirror-me@367bbf2379aca006b9f44a5245b6aa1ac290873e
 
 ADD entrypoint.sh /entrypoint.sh
 
