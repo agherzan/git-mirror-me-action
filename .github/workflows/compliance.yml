@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: Andrei Gherzan <andrei@gherzan.com>
+#
+# SPDX-License-Identifier: MIT
+
+name: Compliance Checks
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  reuse:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: REUSE Compliance Check
+      uses: fsfe/reuse-action@v1
+  DCO-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Check DCO
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        pip3 install -U dco-check
+        dco-check --verbose
