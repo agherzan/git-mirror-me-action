@@ -13,43 +13,33 @@ This GitHub action provides the ability to mirror a repository to any other git
 repository. It wraps/uses the
 [git-mirror-me](https://github.com/agherzan/git-mirror-me) tool.
 
-## Inputs
-
-### `source-repository`
-
-* Sets the source repository for the mirror operation.
-* Passes the argument as `-source-repository` to
-  [git-mirror-me](https://github.com/agherzan/git-mirror-me).
-* Required: no.
-* Defaults: value based on the GitHub environment - `GITHUB_SERVER_URL/GITHUB_REPOSITORY`.
-
-### `destination-repository`
-
-* Sets the destination repository for the mirror operation.
-* Passes the argument as `-destination-repository` to
-  [git-mirror-me](https://github.com/agherzan/git-mirror-me).
-* Required: yes.
-
-### `debug`
-
-* When set to _true_, runs
-  [git-mirror-me](https://github.com/agherzan/git-mirror-me) in debug mode.
-  Ignored otherwise.
-* Required: no.
-
 ## Environment variables
 
-### `GMM_SSH_PRIVATE_KEY`
+#### `GMM_SRC_REPO`
+
+* Sets the source repository for the mirror operation.
+* Defaults to using the `GITHUB_SERVER_URL` and `GITHUB_REPOSITORY` environment
+  variables as `GITHUB_SERVER_URL/GITHUB_REPOSITORY`
+
+#### `GMM_DEST_REPO`
+
+* Sets the destination repository for the mirror operation.
+
+#### `GMM_SSH_PRIVATE_KEY`
 
 * The SSH private key used for SSH authentication during git push operation.
 * Password protected SSH keys are not supported.
 * When not defined, `git` operations will be executed without authentication.
 * When defined, a host public key configuration is required.
 
-### `GMM_SSH_KNOWN_HOSTS`
+#### `GMM_SSH_KNOWN_HOSTS`
 
 * The hosts public keys used for host validation.
 * The format needs to be based on the`known_hosts` file.
+
+#### `GMM_DEBUG`
+
+* When set to '1', runs the tools in debug mode.
 
 ## Sample configurations
 
@@ -72,8 +62,7 @@ jobs:
         env:
           GMM_SSH_PRIVATE_KEY: ${{ secrets.GMM_SSH_PRIVATE_KEY }}
           GMM_SSH_KNOWN_HOSTS: ${{ secrets.GMM_SSH_KNOWN_HOSTS }}
-        with:
-          destination-repository: "git@destination.example:foo/bar.git"
+          GMM_DEST_REPO: "git@destination.example:foo/bar.git"
 ```
 
 ### Workflow for mirroring an explicit repository on push
@@ -95,9 +84,8 @@ jobs:
         env:
           GMM_SSH_PRIVATE_KEY: ${{ secrets.GMM_SSH_PRIVATE_KEY }}
           GMM_SSH_KNOWN_HOSTS: ${{ secrets.GMM_SSH_KNOWN_HOSTS }}
-        with:
-          source-repository: "git@source.example:foo/bar.git"
-          destination-repository: "git@destination.example:foo/bar.git"
+          GMM_SRC_REPO: "git@source.example:foo/bar.git"
+          GMM_DEST_REPO: "git@destination.example:foo/bar.git"
 ```
 
 ## Contributing
