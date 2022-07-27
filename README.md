@@ -21,7 +21,7 @@ repository. It wraps/uses the
 * Defaults to using the `GITHUB_SERVER_URL` and `GITHUB_REPOSITORY` environment
   variables as `GITHUB_SERVER_URL/GITHUB_REPOSITORY`
 
-#### `GMM_DEST_REPO`
+#### `GMM_DST_REPO`
 
 * Sets the destination repository for the mirror operation.
 
@@ -62,7 +62,7 @@ jobs:
         env:
           GMM_SSH_PRIVATE_KEY: ${{ secrets.GMM_SSH_PRIVATE_KEY }}
           GMM_SSH_KNOWN_HOSTS: ${{ secrets.GMM_SSH_KNOWN_HOSTS }}
-          GMM_DEST_REPO: "git@destination.example:foo/bar.git"
+          GMM_DST_REPO: "git@destination.example:foo/bar.git"
 ```
 
 ### Workflow for mirroring an explicit repository on push
@@ -85,7 +85,7 @@ jobs:
           GMM_SSH_PRIVATE_KEY: ${{ secrets.GMM_SSH_PRIVATE_KEY }}
           GMM_SSH_KNOWN_HOSTS: ${{ secrets.GMM_SSH_KNOWN_HOSTS }}
           GMM_SRC_REPO: "git@source.example:foo/bar.git"
-          GMM_DEST_REPO: "git@destination.example:foo/bar.git"
+          GMM_DST_REPO: "git@destination.example:foo/bar.git"
 ```
 
 ## Contributing
